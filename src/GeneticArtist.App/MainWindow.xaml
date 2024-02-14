@@ -1,0 +1,57 @@
+﻿<Window x:Class="GeneticArtist.App.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GeneticArtist.App"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/> <!-- Row for the label -->
+            <RowDefinition Height="Auto"/> <!-- Row for the label -->
+            <RowDefinition Height="*"/> <!-- Row for the images -->
+            <RowDefinition Height="Auto"/> <!-- Row for the label -->
+            <RowDefinition Height="Auto"/> <!-- Row for the label -->
+        </Grid.RowDefinitions>
+        
+        <!-- Label at the top -->
+        
+        <StackPanel Grid.Row="0" Orientation="Vertical">
+            <Label Name="LabelGeneration" Content="Iteration 0" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="24" Margin="10"/>
+            <Label Name="LabelDetail" Content="" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="16" Margin="10"/>
+        </StackPanel>
+        <!-- Container for the images -->
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Image Name="TargetImage" Source="Examples/Targets/monaliza.jpg" Grid.Column="0" Stretch="Uniform" Margin="5"/>
+            <Image Name="BestFitImage" Grid.Column="1" Stretch="Uniform" Margin="5"/>
+        </Grid>
+        
+        <Grid Grid.Row="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Grid.Column="0">
+                <Button Name="ButtonSelectTargetImage" Content="Select Target" Click="SelectTargetImage_Click" Margin="5" />
+                <Button Name="ButtonSelectCanvasImage" Content="Select Canvas" Click="SelectCanvasImage_Click" Margin="5" />
+                
+                <Button Name="ButtonStart" Content="Start" Click="Start_Click" Margin="5"/>
+                <Button Name="ButtonStop" Content="Stop" Click="Stop_Click" Margin="5"/>
+            </StackPanel>
+            
+            <StackPanel Grid.Column="1">
+                <Label Content="Paint method:" FontSize="16"></Label>
+                <RadioButton GroupName="PainterType" Checked="PainterType_Checked" Tag="0" Content="Stroke (auto color)" IsChecked="True"/>
+                <RadioButton GroupName="PainterType" Checked="PainterType_Checked" Tag="1" Content="Stroke (learned color)"/>
+                <RadioButton GroupName="PainterType" Checked="PainterType_Checked" Tag="2" Content="Polygon" />
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Window>

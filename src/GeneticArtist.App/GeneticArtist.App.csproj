@@ -1,0 +1,89 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>net8.0-windows</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <UseWPF>true</UseWPF>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <Content Include="Examples\Targets\monaliza.jpg">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <None Remove="Examples\Strokes\stroke_01.png" />
+      <Content Include="Examples\Strokes\stroke_01.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <None Remove="Examples\Strokes\stroke_02.png" />
+      <Content Include="Examples\Strokes\stroke_02.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <None Remove="Examples\Strokes\stroke_03.png" />
+      <Content Include="Examples\Strokes\stroke_03.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <None Remove="Examples\Strokes\stroke_04.png" />
+      <Content Include="Examples\Strokes\stroke_04.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <None Remove="Examples\Strokes\stroke_05.png" />
+      <Content Include="Examples\Strokes\stroke_05.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <None Remove="Examples\Strokes\stroke_06.png" />
+      <Content Include="Examples\Strokes\stroke_06.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <None Remove="Examples\Strokes\stroke_07.png" />
+      <Content Include="Examples\Strokes\stroke_07.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <None Remove="Examples\Strokes\stroke_08.png" />
+      <Content Include="Examples\Strokes\stroke_08.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <None Remove="Examples\Strokes\stroke_09.png" />
+      <Content Include="Examples\Strokes\stroke_09.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <None Remove="Examples\Strokes\stroke_10.png" />
+      <Content Include="Examples\Strokes\stroke_10.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <None Remove="Examples\Strokes\stroke_11.png" />
+      <Content Include="Examples\Strokes\stroke_11.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <None Remove="Examples\Strokes\stroke_12.png" />
+      <Content Include="Examples\Strokes\stroke_12.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <None Remove="Examples\Strokes\stroke_13.png" />
+      <Content Include="Examples\Strokes\stroke_13.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <None Remove="Examples\Strokes\stroke_14.png" />
+      <Content Include="Examples\Strokes\stroke_14.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <None Remove="Examples\Strokes\stroke_15.png" />
+      <Content Include="Examples\Strokes\stroke_15.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <None Remove="Examples\Strokes\stroke_16.png" />
+      <Content Include="Examples\Strokes\stroke_16.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\GeneticArtist\GeneticArtist.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Microsoft.IO.RecyclableMemoryStream" Version="3.0.0" />
+    </ItemGroup>
+
+</Project>
