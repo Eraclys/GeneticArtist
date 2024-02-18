@@ -7,8 +7,8 @@
 </h4>
 
 ## Disclaimer
-The idea comes from https://github.com/ahmedfgad/GeneticArtist
-I found the project interesting and took it as a challenge to recreate in c# and try to make it run faster.
+The idea comes from https://github.com/Tikitikitikidesuka/GeneticArtist but I found it via https://github.com/ahmedfgad/GeneticArtist. 
+I just took it as a challenge to recreate in c# and try to make it run faster.
 
 ##  Key Features
 
