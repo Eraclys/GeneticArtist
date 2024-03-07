@@ -104,7 +104,7 @@ public static class ImageOperations
         var meanG = (byte)(totalG / pixelCount);
         var meanB = (byte)(totalB / pixelCount);
 
-        return new SKColor(meanR, meanG, meanB);
+        return new SKColor(meanR, meanG, meanB, 126);
     }
     
     public static double GetDifference(this SKBitmap imgA, SKBitmap imgB)
@@ -149,10 +149,6 @@ public static class ImageOperations
             }
         }
 
-        // Calculate average difference per color channel
-        var avgDiff = totalDiff / (4.0 * pixelCount);
-
-        // Normalize the difference to a [0, 1] range
-        return avgDiff / 255.0;
+        return totalDiff / 255.0 / byteCount;
     }
 }

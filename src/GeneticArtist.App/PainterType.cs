@@ -2,7 +2,9 @@
 
 public enum PainterType
 {
+    StrokeAutoColor,
     Stroke,
-    StrokeWithColor,
-    Polygon
+    PolygonAutoColor,
+    Polygon,
+    LineAutoColor
 }

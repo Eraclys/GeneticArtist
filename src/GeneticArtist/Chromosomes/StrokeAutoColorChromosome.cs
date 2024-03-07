@@ -3,17 +3,17 @@ using SkiaSharp;
 
 namespace GeneticArtist.Chromosomes;
 
-public sealed class StrokeWithColorChromosome : ChromosomeBase, IChromosomePainter
+public sealed class StrokeAutoColorChromosome : ChromosomeBase, IChromosomePainter
 {
     static readonly IRandomization Randomization = RandomizationProvider.Current;
     
     readonly SKBitmap _target;
     readonly SKBitmap[] _strokeImages;
 
-    public StrokeWithColorChromosome(
+    public StrokeAutoColorChromosome(
         SKBitmap target,
         SKBitmap[] strokeImages) 
-        : base(9)
+        : base(5)
     {
         _target = target;
         _strokeImages = strokeImages;
@@ -33,22 +33,13 @@ public sealed class StrokeWithColorChromosome : ChromosomeBase, IChromosomePaint
             new Gene(Randomization.GetFloat(0.01f, 1.0f)),
         4 => // angle
             new Gene(Randomization.GetFloat(0f, 360f)),
-        5 => // Hue
-            new Gene(Randomization.GetInt(0, 360)),
-        6 => // Saturation
-            new Gene(Randomization.GetInt(0, 100)),
-        7 => // Value
-            new Gene(Randomization.GetInt(0, 100)),
-        8 => // alpha
-            new Gene(Randomization.GetInt(0, 255)),
         _ => throw new ArgumentOutOfRangeException(nameof(geneIndex), $"Unsupported gene index: {geneIndex}")
     };
 
-    public override IChromosome CreateNew() => 
-        new StrokeWithColorChromosome(
-            _target,
-            _strokeImages);
-    
+    public override IChromosome CreateNew() => new StrokeAutoColorChromosome(
+        _target,
+        _strokeImages);
+
     public void Paint(SKCanvas canvas, IChromosome chromosome)
     {
         var genes = chromosome.GetGenes();
@@ -62,13 +53,8 @@ public sealed class StrokeWithColorChromosome : ChromosomeBase, IChromosomePaint
         var position = new SKPoint(
             (int)genes[1].Value - transformedStroke.Width / 2f,
             (int)genes[2].Value - transformedStroke.Height / 2f);
-
-        var color = SKColor.FromHsv(
-            (int)genes[5].Value,
-            (int)genes[6].Value,
-            (int)genes[7].Value,
-            (byte)(int)genes[8].Value);
         
+        var color = _target.GetMeanColor(transformedStroke, position);
         var colorizedStroke = transformedStroke.ColorizeInPlace(color);
         
         canvas.DrawBitmap(colorizedStroke, position);

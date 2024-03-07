@@ -50,7 +50,9 @@
                 <Label Content="Paint method:" FontSize="16"></Label>
                 <RadioButton GroupName="PainterType" Checked="PainterType_Checked" Tag="0" Content="Stroke (auto color)" IsChecked="True"/>
                 <RadioButton GroupName="PainterType" Checked="PainterType_Checked" Tag="1" Content="Stroke (learned color)"/>
-                <RadioButton GroupName="PainterType" Checked="PainterType_Checked" Tag="2" Content="Polygon" />
+                <RadioButton GroupName="PainterType" Checked="PainterType_Checked" Tag="2" Content="Polygon (auto color)" />
+                <RadioButton GroupName="PainterType" Checked="PainterType_Checked" Tag="3" Content="Polygon (learned color)" />
+                <RadioButton GroupName="PainterType" Checked="PainterType_Checked" Tag="4" Content="Line (auto color)" />
             </StackPanel>
         </Grid>
     </Grid>

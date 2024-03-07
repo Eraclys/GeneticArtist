@@ -7,4 +7,5 @@ public sealed class GeneticConfig
     public int MaxPopulationSize { get; set; }
     public int MaxGenerations { get; set; }
     public float MutationProbability { get; set; }
+    public int? MaxIterations { get; set; }
 }

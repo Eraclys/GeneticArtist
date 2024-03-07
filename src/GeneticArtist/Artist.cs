@@ -10,20 +10,22 @@ public sealed class Artist
     readonly IChromosomePainter _painter;
     readonly FitnessCalculator _fitnessCalculator;
     readonly GeneticConfig _geneticConfig;
+    readonly int? _maxIterations;
     
     GeneticAlgorithm _ga;
     bool _isStopRequested;
-    double _previousBest;
 
     public Artist(
         SKBitmap targetImage,
         IChromosomePainter painter,
         GeneticConfig geneticConfig,
         SKBitmap canvas,
-        Action<int, SKBitmap, TimeSpan>? onIterationCompleted = null)
+        Action<int, SKBitmap, TimeSpan>? onIterationCompleted = null,
+        double? currentBest = null)
     {
         EnsureValidParameters(targetImage, painter, geneticConfig, canvas);
 
+        CurrentBest = currentBest ?? 0;
         _onIterationCompleted = onIterationCompleted;
         
         _painter = painter;
@@ -33,6 +35,7 @@ public sealed class Artist
         PopulationSize = geneticConfig.MinPopulationSize;
         Generations = geneticConfig.MinGenerations;
         _geneticConfig = geneticConfig;
+        _maxIterations = geneticConfig.MaxIterations;
 
         _ga = CreateGeneticAlgorithm();
     }
@@ -41,12 +44,13 @@ public sealed class Artist
     public int PopulationSize { get; private set; }
     public int Generations { get; private set; }
     public int SkipCount { get; private set; }
+    public double CurrentBest { get; private set; }
 
     public bool IsRunning => !_isStopRequested;
 
-    public void Start(int? maxIterations = null)
+    public void Start()
     {
-        while (!_isStopRequested && (!maxIterations.HasValue || IterationCount < maxIterations))
+        while (!_isStopRequested && (!_maxIterations.HasValue || IterationCount < _maxIterations))
         {
             RunOne();
         }
@@ -61,11 +65,11 @@ public sealed class Artist
         _ga.Start();
         IterationCount++;
         
-        if (_ga.BestChromosome.Fitness > _previousBest)
+        if (_ga.BestChromosome.Fitness > CurrentBest)
         {
             using var skCanvas = new SKCanvas(_fitnessCalculator.Canvas);
             _painter.Paint(skCanvas, _ga.BestChromosome);
-            _previousBest = _ga.BestChromosome.Fitness ?? 0;
+            CurrentBest = _ga.BestChromosome.Fitness ?? 0;
         }
         else
         {
@@ -97,7 +101,7 @@ public sealed class Artist
         new UniformCrossover(1),
         new UniformMutation(true))
     {
-        Termination = new GenerationNumberTermination(Generations),
+        Termination = new OrTermination(new TimeEvolvingTermination(TimeSpan.FromMilliseconds(250)), new GenerationNumberTermination(Generations)),
         MutationProbability = _geneticConfig.MutationProbability,
         TaskExecutor = new ParallelTaskExecutor
         {

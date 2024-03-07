@@ -27,7 +27,7 @@ public class GeneticArtistBenchmarks
         
         _geneticAlgorithm = new Artist(
             targetImage,
-            new StrokeChromosome(targetImage, strokeImages),
+            new StrokeAutoColorChromosome(targetImage, strokeImages),
             geneticConfig,
             _canvas,
             OnIterationCompleted);

@@ -36,6 +36,7 @@ public partial class MainWindow
             MaxGenerations = 32,
             MaxPopulationSize = 32,
             MutationProbability = 0.3f,
+            MaxIterations = 100000
         };
         
         _targetImage = ImageLoader.Load(@"Examples\Targets\monaliza.jpg");
@@ -44,7 +45,7 @@ public partial class MainWindow
         using var canvasImage = new SKCanvas(_canvas);
         canvasImage.Clear(SKColors.Black);
         
-        _createChromosomePainter = () => new StrokeChromosome(_targetImage, _strokeImages);
+        _createChromosomePainter = () => new StrokeAutoColorChromosome(_targetImage, _strokeImages);
 
         LabelGeneration.Content = "Iteration 0";
         TargetImage.Source = ConvertSkiaBitmapToWpfImage(_targetImage);
@@ -54,9 +55,11 @@ public partial class MainWindow
 
     Func<IChromosomePainter> GetChromosomePainterFactory(PainterType type) => type switch
     {
+        PainterType.StrokeAutoColor => () => new StrokeAutoColorChromosome(_targetImage, _strokeImages),
         PainterType.Stroke => () => new StrokeChromosome(_targetImage, _strokeImages),
-        PainterType.StrokeWithColor => () => new StrokeWithColorChromosome(_targetImage, _strokeImages),
         PainterType.Polygon => () => new PolygonChromosome(_targetImage),
+        PainterType.LineAutoColor => () => new LineChromosome(_targetImage),
+        PainterType.PolygonAutoColor => () => new PolygonAutoColorChromosome(_targetImage),
         _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
     };
 
@@ -173,7 +176,8 @@ public partial class MainWindow
                 _createChromosomePainter(), 
                 _geneticConfig,
                 _canvas,
-                OnIterationCompleted);
+                OnIterationCompleted,
+                _artist?.CurrentBest);
         
             Task.Run(() => _artist.Start());
         }

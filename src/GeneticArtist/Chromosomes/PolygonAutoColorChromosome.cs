@@ -3,7 +3,7 @@ using SkiaSharp;
 
 namespace GeneticArtist.Chromosomes;
 
-public sealed class PolygonChromosome : ChromosomeBase, IChromosomePainter
+public sealed class PolygonAutoColorChromosome : ChromosomeBase, IChromosomePainter
 {
     static readonly IRandomization Randomization = RandomizationProvider.Current;
     static readonly ThreadLocal<SKPaint> PaintProvider = new(() => new SKPaint
@@ -17,8 +17,8 @@ public sealed class PolygonChromosome : ChromosomeBase, IChromosomePainter
     
     readonly SKBitmap _target;
 
-    public PolygonChromosome(SKBitmap target) 
-        : base(10)
+    public PolygonAutoColorChromosome(SKBitmap target) 
+        : base(7)
     {
         _target = target;
 
@@ -39,18 +39,12 @@ public sealed class PolygonChromosome : ChromosomeBase, IChromosomePainter
             new Gene(Randomization.GetInt(0, _target.Width)),
         5 => // yPos 3
             new Gene(Randomization.GetInt(0, _target.Height)),
-        6 => // Hue
-            new Gene(Randomization.GetInt(0, 360)),
-        7 => // Saturation
-            new Gene(Randomization.GetInt(0, 100)),
-        8 => // Value
-            new Gene(Randomization.GetInt(0, 100)),
-        9 => // alpha
+        6 => // alpha
             new Gene(Randomization.GetInt(0, 255)),
         _ => throw new ArgumentOutOfRangeException(nameof(geneIndex), $"Unsupported gene index: {geneIndex}")
     };
 
-    public override IChromosome CreateNew() => new PolygonChromosome(_target);
+    public override IChromosome CreateNew() => new PolygonAutoColorChromosome(_target);
     
     public void Paint(SKCanvas canvas, IChromosome chromosome)
     {
@@ -68,14 +62,8 @@ public sealed class PolygonChromosome : ChromosomeBase, IChromosomePainter
             (int)genes[4].Value,
             (int)genes[5].Value);
         
-        var color = SKColor.FromHsv(
-            (int)genes[6].Value,
-            (int)genes[7].Value,
-            (int)genes[8].Value,
-            (byte)(int)genes[9].Value);
-        
         var paint = PaintProvider.Value!;
-        paint.Color = color;
+        paint.Color = SKColors.Black;
 
         var path = PathProvider.Value!;
         path.Reset();
@@ -83,7 +71,12 @@ public sealed class PolygonChromosome : ChromosomeBase, IChromosomePainter
         path.LineTo(position2);
         path.LineTo(position3);
         path.Close();
-
+        
+        using var tempBitmap = new SKBitmap(_target.Width, _target.Height);
+        using var tempCanvas = new SKCanvas(tempBitmap);
+        tempCanvas.DrawPath(path, paint);
+        paint.Color = _target.GetMeanColor(tempBitmap, SKPoint.Empty);
+        
         canvas.DrawPath(path, paint);
     }
 }
